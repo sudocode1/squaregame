@@ -18,16 +18,20 @@ namespace Gameplay
     }
     public static class Gameplay {
         private static string? difficulty = null;
+        private static int hits = 0;
+        private static int misses = 0;
         public static bool gameplayOngoing = false;
         private static List<Square> currentSquares = new List<Square> {}; 
         public static bool gameplayPaused = false;
         //public static bool GameplayOngoing { get {return gameplayOngoing;} set {gameplayOngoing = value;} }
-        
+
 
         public static void StartGameplay(string diff)
         {
             difficulty = diff;
             currentSquares = new List<Square> {};
+            hits = 0;
+            misses = 0;
             switch (diff)
             {
                 case "easy":
@@ -79,6 +83,7 @@ namespace Gameplay
                     if (square.active && square.endTime <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
                     {
                         square.active = false;
+                        misses++;
                     }
                     
                 }                
@@ -119,12 +124,30 @@ namespace Gameplay
         private static void ActiveGameplayInputHandler(int keyPressed) {
             if (keyPressed == 48) //zero
             {
-                currentSquares[9].active = false;
+                if (currentSquares[9].active) 
+                {
+                    currentSquares[9].active = false;
+                    hits++;
+                }
+                else
+                {
+                    misses++;
+                }
             }
-            else if (currentSquares[keyPressed - 49] != null && currentSquares[keyPressed - 49].active)
+            else if (keyPressed - 49 <= currentSquares.Count - 1)
             {
-                currentSquares[keyPressed - 49].active = false;
+                if (currentSquares[keyPressed - 49].active)
+                {
+                    currentSquares[keyPressed - 49].active = false;
+                    hits++;
+                }
+                else
+                {
+                    misses++;
+                }
+                
             }
+
         }
 
         private static void Render() 
@@ -140,6 +163,9 @@ namespace Gameplay
                 Raylib.DrawRectangleLines(40*(squareCounter+1), 40, 40, 40, Raylib_cs.Color.Black);
                 squareCounter++;
             }
+
+            Raylib.DrawText($"{hits} hits", 20, 100, 40, Raylib_cs.Color.DarkGreen);
+            Raylib.DrawText($"{misses} misses", 20, 165, 40, Raylib_cs.Color.Red);
 
             if (gameplayPaused) {
                 OptionsOverlay.Render();

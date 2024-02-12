@@ -27,8 +27,16 @@ namespace SquareGame
                         Menus.MainMenu.Render();
                         break;
                     
+                    case "DifficultyMenu":
+                        Menus.DifficultyMenu.InputHandler(Raylib.GetKeyPressed());
+                        Menus.DifficultyMenu.Render();
+                        break;
+                    
                     default:
+                        Raylib.BeginDrawing();
+                        Raylib.ClearBackground(Raylib_cs.Color.RayWhite);
                         Raylib.DrawText("fallback", 120, 55, 40, Raylib_cs.Color.Red);
+                        Raylib.EndDrawing();
                         break;
                 }
             }

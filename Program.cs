@@ -15,29 +15,37 @@ namespace SquareGame
             
             while (running && !Raylib.WindowShouldClose()) 
             {
+                Raylib.SetTargetFPS(60);
                 // Raylib.BeginDrawing();
                 // Raylib.ClearBackground(Color.White);
                 // Raylib.DrawText("test", 14, 14, 20, Color.Black);
                 // Raylib.DrawText("test27", 35, 14, 20, Color.Black);
                 // Raylib.EndDrawing();
-
-                switch (currentMenu) {
-                    case "MainMenu":
-                        Menus.MainMenu.InputHandler(Raylib.GetKeyPressed());
-                        Menus.MainMenu.Render();
-                        break;
-                    
-                    case "DifficultyMenu":
-                        Menus.DifficultyMenu.InputHandler(Raylib.GetKeyPressed());
-                        Menus.DifficultyMenu.Render();
-                        break;
-                    
-                    default:
-                        Raylib.BeginDrawing();
-                        Raylib.ClearBackground(Raylib_cs.Color.RayWhite);
-                        Raylib.DrawText("fallback", 120, 55, 40, Raylib_cs.Color.Red);
-                        Raylib.EndDrawing();
-                        break;
+                if (Gameplay.Gameplay.GameplayOngoing)
+                {
+                    Gameplay.Gameplay.ProcessGameplay();
+                }
+                else
+                {
+                    switch (currentMenu) 
+                    {
+                        case "MainMenu":
+                            Menus.MainMenu.InputHandler(Raylib.GetKeyPressed());
+                            Menus.MainMenu.Render();
+                            break;
+                        
+                        case "DifficultyMenu":
+                            Menus.DifficultyMenu.InputHandler(Raylib.GetKeyPressed());
+                            Menus.DifficultyMenu.Render();
+                            break;
+                        
+                        default:
+                            Raylib.BeginDrawing();
+                            Raylib.ClearBackground(Raylib_cs.Color.RayWhite);
+                            Raylib.DrawText("fallback", 120, 55, 40, Raylib_cs.Color.Red);
+                            Raylib.EndDrawing();
+                            break;
+                    }
                 }
             }
             

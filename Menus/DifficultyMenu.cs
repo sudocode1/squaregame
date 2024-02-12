@@ -13,19 +13,10 @@ namespace Menus
             switch(menuOptions[menuNavigationPoint])
             {
                 case "easy":
-
-                    break;
-
-                case "medium":
-
-                    break;
-
+                case "medium":    
                 case "hard":
-
-                    break;
-                
                 case "extreme":
-
+                    Gameplay.Gameplay.StartGameplay(menuOptions[menuNavigationPoint]);
                     break;
                 
                 case "back":

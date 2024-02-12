@@ -23,6 +23,9 @@ namespace Gameplay
         public static bool gameplayOngoing = false;
         private static List<Square> currentSquares = new List<Square> {}; 
         public static bool gameplayPaused = false;
+        private static long startTime;
+        private static long pausedAt;
+        private static long endTime;
         //public static bool GameplayOngoing { get {return gameplayOngoing;} set {gameplayOngoing = value;} }
 
 
@@ -39,6 +42,9 @@ namespace Gameplay
                     {
                         currentSquares.Add(new Square(false, 0, 0));
                     }
+
+                    startTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    endTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + 120000; // 2 minutes
                     break;
                 
                 case "medium":
@@ -46,6 +52,9 @@ namespace Gameplay
                     {
                         currentSquares.Add(new Square(false, 0, 0));
                     }
+
+                    startTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    endTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + 120000; // 2 minutes
                     break;
 
                 case "hard":
@@ -53,6 +62,9 @@ namespace Gameplay
                     {
                         currentSquares.Add(new Square(false, 0, 0));
                     }
+
+                    startTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    endTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + 120000; // 2 minutes
                     break;
 
                 case "extreme":
@@ -60,6 +72,9 @@ namespace Gameplay
                     {
                         currentSquares.Add(new Square(false, 0, 0));
                     }
+
+                    startTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    endTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + 120000; // 2 minutes
                     break;
             }   
 
@@ -85,6 +100,11 @@ namespace Gameplay
                         square.active = false;
                         misses++;
                     }
+
+                    if (endTime <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
+                    {
+                        gameplayOngoing = false;
+                    }
                     
                 }                
             }
@@ -103,6 +123,7 @@ namespace Gameplay
                     case Raylib_cs.KeyboardKey.Escape:
                         OptionsOverlay.Setup();
                         gameplayPaused = true;
+                        pausedAt = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                         break;
 
                     case Raylib_cs.KeyboardKey.One:
@@ -122,7 +143,7 @@ namespace Gameplay
         }
 
         private static void ActiveGameplayInputHandler(int keyPressed) {
-            if (keyPressed == 48) //zero
+            if (keyPressed == 48 && currentSquares.ElementAtOrDefault(9) != null) //zero
             {
                 if (currentSquares[9].active) 
                 {
@@ -134,7 +155,7 @@ namespace Gameplay
                     misses++;
                 }
             }
-            else if (keyPressed - 49 <= currentSquares.Count - 1)
+            else if (currentSquares.ElementAtOrDefault(keyPressed - 49) != null)
             {
                 if (currentSquares[keyPressed - 49].active)
                 {
@@ -148,6 +169,11 @@ namespace Gameplay
                 
             }
 
+        }
+
+        public static void EndOptionsOverlay()
+        {
+            endTime += DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - pausedAt;
         }
 
         private static void Render() 
@@ -166,8 +192,18 @@ namespace Gameplay
 
             Raylib.DrawText($"{hits} hits", 20, 100, 40, Raylib_cs.Color.DarkGreen);
             Raylib.DrawText($"{misses} misses", 20, 165, 40, Raylib_cs.Color.Red);
+            
+            if (gameplayPaused) 
+            {
+                Raylib.DrawText($"{endTime - pausedAt}ms left", 20, 230, 40, Raylib_cs.Color.Black);
+            }
+            else
+            {
+                Raylib.DrawText($"{endTime - DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}ms left", 20, 230, 40, Raylib_cs.Color.Black);
+            }
 
-            if (gameplayPaused) {
+            if (gameplayPaused) 
+            {
                 OptionsOverlay.Render();
             }
 

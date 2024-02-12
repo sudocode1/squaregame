@@ -61,6 +61,7 @@ namespace Gameplay
             switch(options[navigationPoint]) {
                 case "resume":
                     Gameplay.gameplayPaused = false;
+                    Gameplay.EndOptionsOverlay();
                     break;
                 
                 case "quit":

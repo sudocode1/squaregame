@@ -67,6 +67,21 @@ namespace Gameplay
         {
             if (!gameplayPaused) {
                 // process timings, etc
+                foreach (Square square in currentSquares)
+                {
+                    if (!square.active && new Random().NextDouble() >= 0.98)
+                    {
+                        square.active = true;
+                        square.startTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                        square.endTime = square.startTime + 1000;
+                    }
+
+                    if (square.active && square.endTime <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
+                    {
+                        square.active = false;
+                    }
+                    
+                }                
             }
             Render();
         }
@@ -84,8 +99,32 @@ namespace Gameplay
                         OptionsOverlay.Setup();
                         gameplayPaused = true;
                         break;
+
+                    case Raylib_cs.KeyboardKey.One:
+                    case Raylib_cs.KeyboardKey.Two:
+                    case Raylib_cs.KeyboardKey.Three:
+                    case Raylib_cs.KeyboardKey.Four:
+                    case Raylib_cs.KeyboardKey.Five:
+                    case Raylib_cs.KeyboardKey.Six:
+                    case Raylib_cs.KeyboardKey.Seven:
+                    case Raylib_cs.KeyboardKey.Eight:
+                    case Raylib_cs.KeyboardKey.Nine:
+                    case Raylib_cs.KeyboardKey.Zero:
+                        ActiveGameplayInputHandler(keyPressed);
+                        break;
                 }
             }       
+        }
+
+        private static void ActiveGameplayInputHandler(int keyPressed) {
+            if (keyPressed == 48) //zero
+            {
+                currentSquares[9].active = false;
+            }
+            else if (currentSquares[keyPressed - 49] != null && currentSquares[keyPressed - 49].active)
+            {
+                currentSquares[keyPressed - 49].active = false;
+            }
         }
 
         private static void Render() 

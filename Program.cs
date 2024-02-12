@@ -11,18 +11,19 @@ namespace SquareGame
         public static void Main()
         {
             Raylib.InitWindow(800, 400, "test");
-
+            Raylib.SetTargetFPS(60);
+            Raylib.SetExitKey(0);
             
             while (running && !Raylib.WindowShouldClose()) 
             {
-                Raylib.SetTargetFPS(60);
                 // Raylib.BeginDrawing();
                 // Raylib.ClearBackground(Color.White);
                 // Raylib.DrawText("test", 14, 14, 20, Color.Black);
                 // Raylib.DrawText("test27", 35, 14, 20, Color.Black);
                 // Raylib.EndDrawing();
-                if (Gameplay.Gameplay.GameplayOngoing)
+                if (Gameplay.Gameplay.gameplayOngoing)
                 {
+                    Gameplay.Gameplay.InputHandler(Raylib.GetKeyPressed());
                     Gameplay.Gameplay.ProcessGameplay();
                 }
                 else

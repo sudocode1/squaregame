@@ -85,7 +85,7 @@ namespace Gameplay
 
         public static void RestartGameplay()
         {
-            if (!gameplayOngoing && difficulty != null)
+            if (difficulty != null)
             {
                 StartGameplay(difficulty);
             }

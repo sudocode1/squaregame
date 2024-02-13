@@ -5,7 +5,7 @@ namespace Gameplay
 {
     public static class OptionsOverlay 
     {
-        private static string[] options = ["resume", "quit"];
+        private static string[] options = ["resume", "restart", "quit"];
         private static int navigationPoint = 0;
         
         public static void Setup() {
@@ -62,6 +62,11 @@ namespace Gameplay
                 case "resume":
                     Gameplay.gameplayPaused = false;
                     Gameplay.EndOptionsOverlay();
+                    break;
+
+                case "restart":
+                    Gameplay.gameplayPaused = false;
+                    Gameplay.RestartGameplay();
                     break;
                 
                 case "quit":

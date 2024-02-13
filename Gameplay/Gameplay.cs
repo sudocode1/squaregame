@@ -184,6 +184,10 @@ namespace Gameplay
 
         public static void EndOptionsOverlay()
         {
+            foreach (Square square in currentSquares)
+            {
+                square.endTime += DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - pausedAt;
+            }
             endTime += DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - pausedAt;
         }
 

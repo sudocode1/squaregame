@@ -29,8 +29,9 @@ namespace Gameplay
         //public static bool GameplayOngoing { get {return gameplayOngoing;} set {gameplayOngoing = value;} }
 
 
-        public static void StartGameplay(string diff)
+        public static void StartGameplay(string? diff)
         {
+            if (diff == null) return;
             difficulty = diff;
             currentSquares = new List<Square> {};
             hits = 0;
@@ -82,6 +83,14 @@ namespace Gameplay
             gameplayOngoing = true;
         }
 
+        public static void RestartGameplay()
+        {
+            if (!gameplayOngoing)
+            {
+                StartGameplay(difficulty);
+            }
+        }
+
         public static void ProcessGameplay()
         {
             if (!gameplayPaused) {
@@ -104,6 +113,8 @@ namespace Gameplay
                     if (endTime <= DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
                     {
                         gameplayOngoing = false;
+                        Menus.ResultsScreen.Setup(hits, misses);
+                        Program.currentMenu = "ResultsScreen";
                     }
                     
                 }                
@@ -195,11 +206,11 @@ namespace Gameplay
             
             if (gameplayPaused) 
             {
-                Raylib.DrawText($"{endTime - pausedAt}ms left", 20, 230, 40, Raylib_cs.Color.Black);
+                Raylib.DrawText($"{(endTime - pausedAt)/1000}s left", 20, 230, 40, Raylib_cs.Color.Black);
             }
             else
             {
-                Raylib.DrawText($"{endTime - DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}ms left", 20, 230, 40, Raylib_cs.Color.Black);
+                Raylib.DrawText($"{(endTime - DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())/1000}s left", 20, 230, 40, Raylib_cs.Color.Black);
             }
 
             if (gameplayPaused) 

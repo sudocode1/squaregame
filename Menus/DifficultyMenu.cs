@@ -29,13 +29,15 @@ namespace Menus
         {
             switch ((Raylib_cs.KeyboardKey)keyPressed) {
                 case Raylib_cs.KeyboardKey.Up:
-                    if((menuNavigationPoint - 1) != -1) {
+                    if((menuNavigationPoint - 1) != -1)
+                    {
                         menuNavigationPoint--;
                     }
                     break;
                 
                 case Raylib_cs.KeyboardKey.Down:
-                    if((menuNavigationPoint + 1) != (menuOptions.Length)) {
+                    if((menuNavigationPoint + 1) != (menuOptions.Length))
+                    {
                         menuNavigationPoint++;
                     }
                     break;

@@ -39,6 +39,11 @@ namespace SquareGame
                             Menus.DifficultyMenu.InputHandler(Raylib.GetKeyPressed());
                             Menus.DifficultyMenu.Render();
                             break;
+
+                        case "ResultsScreen":
+                            Menus.ResultsScreen.InputHandler(Raylib.GetKeyPressed());
+                            Menus.ResultsScreen.Render();
+                            break;
                         
                         default:
                             Raylib.BeginDrawing();

@@ -60,7 +60,12 @@ namespace Menus {
             Raylib.ClearBackground(Raylib_cs.Color.RayWhite);
 
             Raylib.DrawText($"{hits} hits", 20, 20, 40, Raylib_cs.Color.DarkGreen);
-            Raylib.DrawText($"{misses} misses", 20, 80, 40, Raylib_cs.Color.Red);
+            Raylib.DrawText($"{misses} misses", 20, 60, 40, Raylib_cs.Color.Red);
+
+            if (misses == 0)
+            {
+                Raylib.DrawText("perfect", 20, 100, 40, Raylib_cs.Color.Orange);
+            }
 
             int resultsMenuCounter = 0;
             foreach (string option in menuOptions)
